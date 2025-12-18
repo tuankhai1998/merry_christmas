@@ -17,34 +17,51 @@
     <div class="container">
         <!-- Màn hình chờ: Hộp quà -->
         <div class="gift-box-container" id="giftBox">
-            <div class="gift-box">
-                <div class="lid">
-                    <div class="ribbon-h"></div>
-                    <div class="ribbon-v"></div>
-                </div>
-                <div class="box">
-                    <div class="ribbon-h"></div>
-                    <div class="ribbon-v"></div>
-                </div>
-            </div>
-            <p class="click-me">Nhấn vào hộp quà đi nè! 🎁</p>
+            <img src="images/gift_box.png" alt="Gift Box" class="gift-box-img">
+            <p class="click-me">Người đẹp nhấn vào hộp quà đi nè! 🎁</p>
         </div>
 
         <!-- Màn hình nội dung: Lời chúc/Tỏ tình -->
         <div class="card hidden" id="card">
-            <div class="card-content">
+            <div class="card-content" id="cardContent">
+                <!-- Ảnh trang trí trên -->
+                <div class="card-img-top">
+                    <img src="images/top-decor.png" alt="Decoration" id="topImg" onerror="this.style.display='none'">
+                </div>
+
                 <h1>Merry Christmas! 🎄</h1>
                 <div class="message" id="message"></div>
-                <div class="heart">❤️</div>
+                
+                <!-- Nút bấm -->
+                <div class="buttons-container hidden" id="btnContainer">
+                    <button id="btnYes" class="btn btn-yes">Đồng ý ❤️</button>
+                    <button id="btnNo" class="btn btn-no">Thêm thời gian ⏱️</button>
+                </div>
+
+                <!-- Ảnh trang trí dưới -->
+                <div class="card-img-bottom">
+                    <img src="images/bottom-decor.png" alt="Decoration" id="bottomImg" onerror="this.style.display='none'">
+                </div>
+                
+                <div class="heart-icon">❤️</div>
+            </div>
+            
+            <!-- Ảnh GIF kết thúc -->
+            <div class="final-gif hidden" id="finalGifContainer">
+                <img src="images/g1.gif" alt="Happy Ending" id="finalGif">
+                <h2 class="final-text">Yêu em nhiều lắm! ❤️</h2>
             </div>
         </div>
     </div>
 
-    <!-- File nhạc (Cần thay thế đường dẫn file nhạc của bạn vào đây) -->
-    <!-- Ví dụ: assets/music.mp3 -->
+    <!-- Nhạc nền ban đầu -->
     <audio id="bgMusic" loop>
-        <source src="" type="audio/mp3">
-        Trình duyệt của bạn không hỗ trợ phát nhạc.
+        <source src="./song/We Wish You A Merry Christmas (Piano Version).mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Nhạc nền khi tỏ tình (Message 3) -->
+    <audio id="finalMusic" loop>
+        <source src="./song/Nơi Này Có Anh (Piano Cover).mp3" type="audio/mp3">
     </audio>
 
     <script src="script.js"></script>

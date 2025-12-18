@@ -4,6 +4,7 @@
     --primary-green: #165b33;
     --gold: #f8b229;
     --snow-color: #ffffff;
+    --box-shadow-color: rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -23,7 +24,7 @@ body {
     color: white;
 }
 
-/* Hiệu ứng tuyết rơi */
+/* --- Optimized Snowfall --- */
 .snow-container {
     position: absolute;
     top: 0;
@@ -36,19 +37,26 @@ body {
 
 .snowflake {
     position: absolute;
-    top: -10px;
-    color: white;
+    top: -20px;
+    color: var(--snow-color);
     font-size: 1em;
-    animation: fall linear forwards;
+    animation: fall linear infinite;
+    will-change: transform;
+}
+
+.snowflake.heart {
+    color: #ff4d6d;
+    text-shadow: 0 0 5px #ff4d6d;
 }
 
 @keyframes fall {
-    to {
-        transform: translateY(105vh);
-    }
+    0% { transform: translateY(-20px) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(105vh) translateX(20px); opacity: 0; }
 }
 
-/* Nút bật nhạc */
+/* --- Music Button --- */
 .music-control {
     position: absolute;
     top: 20px;
@@ -66,70 +74,35 @@ body {
     font-family: 'Mountains of Christmas', cursive;
     font-size: 1.2rem;
     transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 #playMusic:hover {
     transform: scale(1.1);
     background: #1e7a44;
+    box-shadow: 0 6px 8px rgba(0,0,0,0.4);
 }
 
-/* Hộp quà */
+/* --- Enhanced Gift Box --- */
 .gift-box-container {
     text-align: center;
     cursor: pointer;
     z-index: 10;
     transition: transform 0.5s;
+    position: relative;
 }
 
-.gift-box-container:hover .gift-box {
+.gift-box-container:hover .gift-box-img {
     animation: shake 0.5s infinite;
 }
 
-.gift-box {
-    position: relative;
-    width: 150px;
-    height: 150px;
+.gift-box-img {
+    width: 350px;
+    height: auto;
     margin: 0 auto 20px;
-}
-
-.box {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 120px;
-    background: var(--primary-red);
-    border-radius: 5px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
-
-.lid {
-    position: absolute;
-    top: 10px;
-    left: -5px;
-    width: 160px;
-    height: 40px;
-    background: #e63946;
-    border-radius: 5px;
-    z-index: 2;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-}
-
-.ribbon-v {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30px;
-    height: 100%;
-    background: var(--gold);
-}
-
-.ribbon-h {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100%;
-    height: 30px;
-    background: var(--gold);
+    display: block;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
 }
 
 .click-me {
@@ -137,6 +110,7 @@ body {
     color: var(--gold);
     text-shadow: 0 0 10px rgba(248, 178, 41, 0.5);
     animation: pulse 1.5s infinite;
+    margin-top: 15px;
 }
 
 @keyframes shake {
@@ -153,15 +127,13 @@ body {
     100% { opacity: 0.8; transform: scale(1); }
 }
 
-/* Lời chúc */
-.hidden {
-    display: none;
-}
+/* --- Card & Content --- */
+.hidden { display: none !important; }
 
 .card {
     background: rgba(255, 255, 255, 0.95);
     color: #333;
-    padding: 40px;
+    padding: 30px;
     border-radius: 20px;
     max-width: 600px;
     width: 90%;
@@ -179,21 +151,43 @@ body {
 
 .card h1 {
     color: var(--primary-red);
-    font-size: 3rem;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
 }
 
 .message {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 1.6;
-    min-height: 100px;
+    min-height: 120px;
     color: #2c3e50;
+    white-space: pre-wrap;
+    margin-bottom: 20px;
 }
 
-.heart {
+/* Card Images */
+.card-img-top, .card-img-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.card-img-bottom {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.card-img-top img, .card-img-bottom img {
+    max-height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.heart-icon {
     font-size: 3rem;
-    margin-top: 20px;
+    margin-top: 10px;
+    display: inline-block;
     animation: beat 1s infinite;
 }
 
@@ -202,9 +196,116 @@ body {
     50% { transform: scale(1.2); }
 }
 
-/* Mobile responsive */
-@media (max-width: 600px) {
+/* --- Buttons --- */
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    position: relative;
+    min-height: 60px; /* Space for buttons */
+}
+
+.btn {
+    padding: 10px 25px;
+    font-family: 'Mountains of Christmas', cursive;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-yes {
+    background: var(--primary-red);
+    color: white;
+}
+
+.btn-yes:hover {
+    background: #a51d1e;
+    transform: scale(1.1);
+}
+
+.btn-no {
+    background: #95a5a6;
+    color: white;
+    position: relative; /* Changed to absolute via JS when moving */
+}
+
+/* --- Final GIF --- */
+.final-gif {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 1s ease;
+}
+
+.final-gif img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.final-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--primary-red);
+    margin-top: 20px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Floating Images (Desktop Only) --- */
+.floating-image {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    border: 5px solid white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 15;
+    animation: float 3s ease-in-out infinite, appearFloat 3s ease-in-out infinite;
+    animation-fill-mode: forwards;
+    object-fit: cover;
+    opacity: 0;
+}
+
+@keyframes appearFloat {
+    0% { opacity: 0; transform: translateY(20px); }
+    10% { opacity: 1; }
+    50% { transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .floating-image { display: none !important; }
+    .card { width: 95%; padding: 20px; }
     .card h1 { font-size: 2rem; }
-    .message { font-size: 1.4rem; }
-    .gift-box { transform: scale(0.8); }
+    .message { font-size: 1.3rem; min-height: 100px; }
+    .gift-box { width: 120px; height: 120px; }
+    .box { height: 100px; }
+    .lid { width: 140px; height: 35px; top: 10px; left: -10px; }
+    .lid::before, .lid::after { width: 40px; height: 40px; top: -20px; }
+    .lid::before { left: 40px; }
+    .lid::after { right: 40px; }
+    .buttons-container { flex-direction: column; align-items: center; }
+    .btn { width: 80%; }
+}
+
+@media (max-width: 480px) {
+    .card h1 { font-size: 1.8rem; }
+    .message { font-size: 1.2rem; }
+    #playMusic { padding: 8px 15px; font-size: 1rem; }
 }
