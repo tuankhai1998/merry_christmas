@@ -4,16 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const typingSpeed = 50;
     // Tin nhắn tuần tự
     const messages = [
-        "Chúc người đẹp một giáng sinh ấm áp và hạnh phúc!🎁🎄",
-        "Hương à ! Anh không muốn gọi em là người đẹp nữa mà anh muốn được gọi em là người yêu ❤️",
-        "Làm người yêu anh nhé... ❤️"
+        "Chúc người đẹp một giáng sinh ấm áp, hạnh phúc và luôn cười thật xinh!🎁🎄",
+        "Chúc em luôn thành công đặc biệt là bảo vệ tốt đồ án nhé!🎁🎄",
+        "...<3...!!🎁🎄",
+        "Hương à... ! ",
+        "Anh không muốn gọi em là người đẹp nữa.",
+        "Mà anh muốn được gọi em là người yêu! ❤️",
+        "Làm người yêu anh nhé...? ❤️"
     ];
 
     // Danh sách ảnh bay
     const floatingImages = [
         'images/1.jpg', 'images/2.jpg', 'images/3.jpg',
         'images/4.jpg', 'images/5.jpg', 'images/6.jpg',
-        'images/7.jpg', 'images/8.jpg', 'images/9.jpg'
+        'images/7.jpg', 'images/8.jpg', 'images/9.jpg',
+        'images/10.jpg', 'images/11.jpg', 'images/12.jpg',
+        'images/13.jpg', 'images/14.jpg', 'images/15.jpg',
+        'images/16.jpg', 'images/17.jpg', 'images/18.jpg',
+        'images/19.jpg', 'images/20.jpg', 'images/21.jpg'
     ];
 
     // --- Snowfall Logic ---
@@ -108,35 +116,59 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Floating Images Logic ---
     const showFloatingImages = () => {
         if (window.innerWidth <= 768) return;
-
-        const maxImages = 6;
+        const maxImages = 6; // Giảm xuống 6 để luôn có chỗ trống cho ảnh mới xuất hiện ngẫu nhiên
         const activeImages = [];
+        const occupiedZones = new Set(); // Theo dõi các vùng đang có ảnh
+
         const zones = [
             // Top Center (Above Card)
-            { left: [35, 55], top: [2, 10] },
+            { id: 0, left: [35, 55], top: [2, 10] },
             
             // Bottom Center (Below Card)
-            { left: [35, 55], top: [80, 85] },
+            { id: 1, left: [35, 55], top: [80, 85] },
 
             // Left Column
-            { left: [2, 12], top: [5, 20] },
-            { left: [2, 12], top: [30, 45] },
-            { left: [2, 12], top: [55, 70] },
-            { left: [2, 12], top: [80, 90] },
+            { id: 2, left: [2, 12], top: [5, 20] },
+            { id: 3, left: [2, 12], top: [30, 45] },
+            { id: 4, left: [2, 12], top: [55, 70] },
+            { id: 5, left: [2, 12], top: [80, 90] },
 
             // Right Column
-            { left: [80, 88], top: [5, 20] },
-            { left: [80, 88], top: [30, 45] },
-            { left: [80, 88], top: [55, 70] },
-            { left: [80, 88], top: [80, 90] }
+            { id: 6, left: [80, 88], top: [5, 20] },
+            { id: 7, left: [80, 88], top: [30, 45] },
+            { id: 8, left: [80, 88], top: [55, 70] },
+            { id: 9, left: [80, 88], top: [80, 90] }
         ];
 
         const spawnImage = () => {
+            // Manage limit first to free up a zone if needed
+            if (activeImages.length >= maxImages) {
+                const oldImg = activeImages.shift();
+                
+                // Giải phóng vùng của ảnh cũ ngay lập tức để ảnh mới có thể dùng (hoặc giữ lại nếu muốn tránh ngay vị trí đó)
+                // Ở đây ta giải phóng luôn để tăng lựa chọn
+                const oldZoneId = parseInt(oldImg.dataset.zoneId);
+                occupiedZones.delete(oldZoneId);
+
+                oldImg.style.opacity = '0';
+                setTimeout(() => {
+                    oldImg.remove();
+                }, 1000); 
+            }
+
+            // Find available zones
+            const availableZones = zones.filter(z => !occupiedZones.has(z.id));
+            
+            if (availableZones.length === 0) return; // Should not happen if maxImages < zones.length
+
+            // Pick random available zone
+            const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
+            
+            // Mark zone as occupied
+            occupiedZones.add(zone.id);
+
             // Pick random image source
             const src = floatingImages[Math.floor(Math.random() * floatingImages.length)];
-
-            // Pick random zone
-            const zone = zones[Math.floor(Math.random() * zones.length)];
 
             // Calculate position
             const left = Math.random() * (zone.left[1] - zone.left[0]) + zone.left[0];
@@ -145,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = src;
             img.className = 'floating-image';
+            img.dataset.zoneId = zone.id; // Lưu ID vùng vào element
             img.style.left = left + '%';
             img.style.top = top + '%';
             img.style.opacity = '0'; // Start invisible
@@ -158,15 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             activeImages.push(img);
-
-            // Manage limit
-            if (activeImages.length > maxImages) {
-                const oldImg = activeImages.shift();
-                oldImg.style.opacity = '0';
-                setTimeout(() => {
-                    oldImg.remove();
-                }, 1000); // Wait for fade out
-            }
         };
 
         // Start spawning
