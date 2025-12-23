@@ -24,6 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
         'images/19.jpg', 'images/20.jpg', 'images/21.jpg'
     ];
 
+    // --- Preload Images ---
+    const preloadImages = () => {
+        const imagesToPreload = [
+            ...floatingImages,
+        ];
+
+        imagesToPreload.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    };
+
+    preloadImages();
+
     // --- Snowfall Logic ---
     const createSnow = () => {
         const container = document.querySelector('.snow-container');
