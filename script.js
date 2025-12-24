@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tin nhắn tuần tự
     const messages = [
         "Chúc người đẹp một giáng sinh ấm áp, tràn đầu yêu thương, niềm vui và hạnh phúc!🎁🎄",
-        "Chúc em có tất cả trừ vất vả, cười nhiều và thành công bảo vệ luận án!🎁🎄",
-        "...<3...!!🎁🎄",
+        "Chúc em có tất cả trừ vất vả, cười nhiều và thành công bảo vệ luận án! Người đẹp nhé..🎁🎄",
+        "...<3...!! Nhưng..🎁🎄 ",
         "Hương à... ! ",
         "Anh không muốn gọi em là người đẹp nữa.",
         "Mà anh muốn được gọi em là người yêu! ❤️",
