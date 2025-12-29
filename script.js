@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const messages = [
         "Chúc người đẹp một giáng sinh ấm áp, tràn đầu yêu thương, niềm vui và hạnh phúc!🎁🎄",
         "Chúc em có tất cả trừ vất vả, cười nhiều và thành công bảo vệ luận án! Người đẹp nhé..🎁🎄",
-        // "...<3...!! Nhưng..🎁🎄 ",
-        // "Hương à... ! ",
-        "Cố lên nhé ....!❤️❤️❤️",
-        // "Mà anh muốn được gọi em là người yêu! ❤️",
-        // "Làm người yêu anh nhé...? ❤️"
+        "...<3...!! Nhưng..🎁🎄 ",
+        "Hương à... ! ",
+        "Anh không muốn gọi em là người đẹp nữa.",
+        "Mà anh muốn được gọi em là người yêu! ❤️",
+        "Làm người yêu anh nhé...? ❤️"
     ];
 
     // Danh sách ảnh bay
@@ -63,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeWriterSequence = async (msgs, elementId, speed) => {
         const element = document.getElementById(elementId);
         const bgMusic = document.getElementById('bgMusic');
-        bgMusic.play().catch(() => { });
-        // const finalMusic = document.getElementById('finalMusic');
+        bgMusic.play().catch(() => {});
+        const finalMusic = document.getElementById('finalMusic');
 
         const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -85,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let k = 0; k < msgs.length; k++) {
             // Chuyển nhạc khi đến tin nhắn thứ 3 (index 2)
-            // if (k === 2) {
-            //     bgMusic.pause();
-            //     finalMusic.play().catch(() => { });
-            // }
+            if (k === 2) {
+                bgMusic.pause();
+                finalMusic.play().catch(() => { });
+            }
 
             await typeText(msgs[k]);
 
@@ -98,22 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Câu cuối cùng -> Hiện nút bấm
                 await wait(500);
-                const gifContainer = document.getElementById('finalGifContainer');
-                gifContainer.classList.remove('hidden');
-                // document.getElementById('btnContainer').classList.remove('hidden');
-
+                document.getElementById('btnContainer').classList.remove('hidden');
+                
                 // Bắt đầu đếm giờ và gửi email định kỳ
-                // buttonShownTime = new Date();
-
+                buttonShownTime = new Date();
+                
                 // Gửi email báo cáo mỗi 30 giây (để tránh spam, bạn có thể chỉnh xuống 3000ms = 3s nếu muốn)
                 // Lưu ý: Gửi mỗi 3s sẽ rất tốn quota miễn phí của EmailJS
-                // emailInterval = setInterval(() => {
-                //     // Chỉ gửi nếu số lần hover thay đổi so với lần trước
-                //     if (hoverNoCount > lastHoverCount) {
-                //         sendEmail("ĐANG SUY NGHĨ 🤔");
-                //         lastHoverCount = hoverNoCount; // Cập nhật lại số lần hover đã gửi
-                //     }
-                // }, 3000); 
+                emailInterval = setInterval(() => {
+                    // Chỉ gửi nếu số lần hover thay đổi so với lần trước
+                    if (hoverNoCount > lastHoverCount) {
+                        sendEmail("ĐANG SUY NGHĨ 🤔");
+                        lastHoverCount = hoverNoCount; // Cập nhật lại số lần hover đã gửi
+                    }
+                }, 3000); 
             }
         }
     };
@@ -139,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const zones = [
             // Top Center (Above Card)
             { id: 0, left: [35, 55], top: [2, 10] },
-
+            
             // Bottom Center (Below Card)
             { id: 1, left: [35, 55], top: [80, 85] },
 
@@ -160,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Manage limit first to free up a zone if needed
             if (activeImages.length >= maxImages) {
                 const oldImg = activeImages.shift();
-
+                
                 // Giải phóng vùng của ảnh cũ ngay lập tức để ảnh mới có thể dùng (hoặc giữ lại nếu muốn tránh ngay vị trí đó)
                 // Ở đây ta giải phóng luôn để tăng lựa chọn
                 const oldZoneId = parseInt(oldImg.dataset.zoneId);
@@ -169,17 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 oldImg.style.opacity = '0';
                 setTimeout(() => {
                     oldImg.remove();
-                }, 1000);
+                }, 1000); 
             }
 
             // Find available zones
             const availableZones = zones.filter(z => !occupiedZones.has(z.id));
-
+            
             if (availableZones.length === 0) return; // Should not happen if maxImages < zones.length
 
             // Pick random available zone
             const zone = availableZones[Math.floor(Math.random() * availableZones.length)];
-
+            
             // Mark zone as occupied
             occupiedZones.add(zone.id);
 
@@ -219,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Button Logic ---
     const btnNo = document.getElementById('btnNo');
     const btnYes = document.getElementById('btnYes');
-
+    
     // Email tracking variables
     let hoverNoCount = 0;
     let lastHoverCount = 0; // Lưu số lần hover lần trước để so sánh
@@ -230,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendEmail = (type) => {
         const now = new Date();
         const timeElapsed = buttonShownTime ? Math.floor((now - buttonShownTime) / 1000) : 0;
-
+        
         // Cấu trúc dữ liệu gửi đi
         const formData = {
             access_key: '27046ba6-3dee-4685-927f-01da376f8c5c', // Thay bằng Access Key của bạn từ Web3Forms
@@ -254,36 +252,36 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify(formData)
         })
-            .then(async (response) => {
-                const json = await response.json();
-                if (response.status == 200) {
-                    console.log('Email sent successfully:', json.message);
-                } else {
-                    console.log('Email sending failed:', json);
-                }
-            })
-            .catch(error => {
-                console.log('Error sending email:', error);
-            });
+        .then(async (response) => {
+            const json = await response.json();
+            if (response.status == 200) {
+                console.log('Email sent successfully:', json.message);
+            } else {
+                console.log('Email sending failed:', json);
+            }
+        })
+        .catch(error => {
+            console.log('Error sending email:', error);
+        });
     };
 
     // Nút "Thêm thời gian" né tránh
     btnNo.addEventListener('mouseover', () => {
         hoverNoCount++; // Tăng biến đếm
-
+        
         // Random vị trí mới
         const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
         const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
-
+        
         btnNo.style.position = 'fixed';
         btnNo.style.left = x + 'px';
         btnNo.style.top = y + 'px';
-
+        
         // Hiệu ứng mờ và nhỏ đi
         btnNo.style.transition = 'all 0.5s';
         btnNo.style.opacity = '0.5';
         btnNo.style.transform = 'scale(0.8)';
-
+        
         // Reset sau 3s
         setTimeout(() => {
             btnNo.style.opacity = '1';
@@ -295,20 +293,20 @@ document.addEventListener('DOMContentLoaded', () => {
     btnYes.addEventListener('click', () => {
         // Gửi email xác nhận ngay lập tức
         sendEmail("ĐÃ ĐỒNG Ý ❤️");
-
+        
         // Dừng gửi email định kỳ
         if (emailInterval) clearInterval(emailInterval);
 
         // Ẩn nội dung card
         document.getElementById('cardContent').classList.add('hidden');
-
+        
         // Hiện GIF
         const gifContainer = document.getElementById('finalGifContainer');
         gifContainer.classList.remove('hidden');
-
+        
         // Đổi tuyết thành tim
         transformSnowToHearts();
-
+        
         // Bắn pháo giấy (tạo thêm tim bay)
         createHeartExplosion();
     });
